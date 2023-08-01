@@ -1,6 +1,7 @@
 import User from "../Models/User";
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
 import AuthService from "../Services/AuthService";
+import { useLocation } from "react-router-dom";
 
 interface AuthContextType {
   // We defined the user type in `index.d.ts`, but it's
@@ -30,12 +31,12 @@ export function AuthProvider({
   // We are using `react-router` for this example,
   // but feel free to omit this or use the
   // router of your choice.
-  // const location = useLocation();
+  const location = useLocation();
 
   // Reset the error state if we change page
-  // useEffect(() => {
-  //   if (error) setError(undefined);
-  // }, [location.pathname]);
+  useEffect(() => {
+    if (error) setError(undefined);
+  }, [location.pathname]);
 
   // Check if there is a currently active session
   // when the provider is mounted for the first time.

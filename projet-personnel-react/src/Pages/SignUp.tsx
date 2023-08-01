@@ -2,16 +2,19 @@ import { Box, Button, FormHelperText, TextField } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { Form, Link } from "react-router-dom";
 import useAuth from "../Context/useAuth";
+import Loading from "../Components/Loading";
 export default function SignUp() {
     const [email, setEmail] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const { error, signUp } = useAuth();
+    const { error, signUp, loading } = useAuth();
 
     function handleSubmit() {
         signUp(email, name, password);
     }
+
+    if(loading) return <Loading/>;
 
     return (
         <Box sx={{ padding: "2em", maxWidth: "50%", margin: "auto" }}>

@@ -2,16 +2,19 @@ import { Box, Button, FormHelperText, TextField } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { Form, Link } from "react-router-dom";
 import useAuth from "../Context/useAuth";
+import Loading from "../Components/Loading";
 export default function Login() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const { error, login } = useAuth();
+    const { error, login, loading } = useAuth();
 
     function handleSubmit() {
         login(email, password);
     }
 
+    if(loading) return <Loading/>;
+    
     return (
         <Box sx={{ padding: "2em", maxWidth: "50%", margin: "auto" }}>
             {/* Login form */}
@@ -22,7 +25,7 @@ export default function Login() {
                     value={email}
                     fullWidth
                     required
-                    type="email"
+                    type="text"
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setEmail(event.target.value);
                     }}
