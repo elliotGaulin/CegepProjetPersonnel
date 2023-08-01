@@ -43,9 +43,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
         <RouterProvider router={router} />
-      </AuthProvider>
     </ThemeProvider>
   );
 }
