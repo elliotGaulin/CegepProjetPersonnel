@@ -34,7 +34,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Invalid credentials',
+            'message' => 'Adresse courriel ou mot de passe invalide',
         ], 401);
     }
 
@@ -61,18 +61,7 @@ class AuthController extends Controller
     {
         Auth::user()->tokens()->delete();
         return response()->json([
-            'message' => 'Successfully logged out',
-        ]);
-    }
-
-    public function refresh()
-    {
-        return response()->json([
-            'user' => Auth::user(),
-            'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
+            'message' => 'Déconnexion réussie',
         ]);
     }
 }
