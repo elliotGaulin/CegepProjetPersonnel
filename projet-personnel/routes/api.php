@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,4 +24,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
+});
+
+Route::prefix('files')->controller(FileController::class)->middleware('auth:sanctum')->group(function () {
+    Route::post('/', 'store');
+    Route::get('/', 'index');
+    Route::get('/{file}', 'show');
+    Route::get('/{file}/download', 'download');
+    Route::delete('/{file}', 'destroy');
 });
