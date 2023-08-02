@@ -1,17 +1,22 @@
 import { API_URL } from "../config";
+import BaseService from "./BaseService";
 
-class AuthService {
-    public static isAuthenticated(): boolean {
-        const token = localStorage.getItem('token');
-        return token !== null;
-    }
+/**
+ * Service de gestion de l'authentification
+ * Effectue les requêtes vers l'API pour l'authentification
+ */
+class AuthService extends BaseService {
 
+    /**
+     * Connecte l'utilisateur
+     * @param email Adresse email de l'utilisateur
+     * @param password Mot de passe de l'utilisateur
+     * @returns les données de l'utilisateur connecté
+     */
     public static async login(email: string, password: string) {
         let response = await fetch(API_URL + '/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: this.getHeaders(),
             body: JSON.stringify({ email, password })
         })
         let data = await response.json();
@@ -25,19 +30,15 @@ class AuthService {
         }
     }
 
+    /**
+     * Déconnecte l'utilisateur
+     * @returns un message de confirmation de déconnexion
+     */
     public static async logout() {
-        const user = JSON.parse(localStorage.getItem('user') ?? 'null');
-        if (!user) {
-            return;
-        }
-        console.log(user ?? "AAAH");
 
         let response = await fetch(API_URL + '/logout', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + user.authorization.token ?? '',
-            },
+            headers: this.getAuthHeaders(),
         })
 
         let data = await response.json();
@@ -45,12 +46,17 @@ class AuthService {
         return data;
     }
 
+    /**
+     * Inscription et connexion d'un nouvel utilisateur
+     * @param email Adresse email de l'utilisateur
+     * @param name Nom de l'utilisateur
+     * @param password Mot de passe de l'utilisateur
+     * @returns les données de l'utilisateur connecté
+     */
     public static async signUp(email: string, name: string, password: string) {
         let response = await fetch(API_URL + '/register', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: this.getHeaders(),
             body: JSON.stringify({ email, name, password })
         })
 
@@ -64,6 +70,10 @@ class AuthService {
         }
     }
 
+    /**
+     * Récupère les données de l'utilisateur connecté
+     * @returns les données de l'utilisateur connecté
+     */
     public static async getCurrentUser() {
         const user = JSON.parse(localStorage.getItem('user') ?? 'null');
         return user ?? undefined;

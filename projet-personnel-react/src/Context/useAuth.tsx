@@ -1,11 +1,17 @@
+/**
+ * Contexte utilisé pour la gestion de l'authentification
+ * Inspiré de : https://blog.finiam.com/blog/predictable-react-authentication-with-the-context-api
+ */
+
 import User from "../Models/User";
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
 import AuthService from "../Services/AuthService";
 import { useLocation } from "react-router-dom";
 
+/**
+ * Définition du type du contexte 
+ */
 interface AuthContextType {
-  // We defined the user type in `index.d.ts`, but it's
-  // a simple object with email, name and password.
   user?: User;
   loading: boolean;
   error?: any;
@@ -14,10 +20,16 @@ interface AuthContextType {
   logout: () => void;
 }
 
+// Création du contexte
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 
-// Export the provider as we need to wrap the entire app with it
+/**
+ * Fournisseur du contexte d'authentification
+ * Exporté puisque qu'on a besoin de l'utiliser pour enveloppé une bonne partie de l'application
+ * @param param0 composants enfants qui auront accès au contexte
+ * @returns Le fournisseur de notre contexte
+ */
 export function AuthProvider({
   children,
 }: {
@@ -28,23 +40,14 @@ export function AuthProvider({
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
-  // We are using `react-router` for this example,
-  // but feel free to omit this or use the
-  // router of your choice.
+  
+  // Supprimé l'erreur sur le changement de page
   const location = useLocation();
-
-  // Reset the error state if we change page
   useEffect(() => {
     if (error) setError(undefined);
   }, [location.pathname]);
 
-  // Check if there is a currently active session
-  // when the provider is mounted for the first time.
-  //
-  // If there is an error, it means there is no session.
-  //
-  // Finally, just signal the component that the initial load
-  // is over.
+  
   useEffect(() => {
     AuthService.getCurrentUser()
       .then((user) => setUser(user))
@@ -52,14 +55,12 @@ export function AuthProvider({
       .finally(() => setLoadingInitial(false));
   }, []);
 
-  // Flags the component loading state and posts the login
-  // data to the server.
-  //
-  // An error means that the email/password combination is
-  // not valid.
-  //
-  // Finally, just signal the component that loading the
-  // loading state is over.
+  /**
+   * Fonction de connexion
+   * Fait appel au service d'authentification puis met à jour le contexte
+   * @param email
+   * @param password 
+   */
   function login(email: string, password: string) {
     setLoading(true);
     AuthService.login(email, password)
@@ -73,6 +74,14 @@ export function AuthProvider({
   }
 
 
+  /**
+   * Fonction de création de compte
+   * Fait appel au service d'authentification puis met à jour le contexte
+   * 
+   * @param email Adresse courriel
+   * @param name Nom 
+   * @param password Mot de passe
+   */
   function signUp(email: string, name: string, password: string) {
     setLoading(true);
     AuthService.signUp(email, name, password)
@@ -85,6 +94,10 @@ export function AuthProvider({
       .finally(() => setLoading(false));
   }
 
+  /**
+   * Fonction de déconnxion de l'utilisateur
+   * Fait appel au service d'authentification puis met à jour le contexte
+   */
   function logout() {
     setLoading(true);
     AuthService.logout()
@@ -92,15 +105,7 @@ export function AuthProvider({
       .finally(() => setLoading(false));
   }
 
-  // Make the provider update only when it should.
-  // We only want to force re-renders if the user,
-  // loading or error states change.
-  //
-  // Whenever the `value` passed into a provider changes,
-  // the whole tree under the provider re-renders, and
-  // that can be very costly! Even in this case, where
-  // you only get re-renders when logging in and out
-  // we want to keep things very performant.
+  //Mettre à jour le contexte seulement lorsque user, loading ou error change
   const memoedValue = useMemo(
     () => ({
       user,
@@ -113,8 +118,7 @@ export function AuthProvider({
     [user, loading, error]
   );
 
-  // We only want to render the underlying app after we
-  // assert for the presence of a current user.
+  // Charger l'application seulement après le chargement initial de l'utilisateur
   return (
     <AuthContext.Provider value={memoedValue}>
       {!loadingInitial && children}
@@ -122,8 +126,11 @@ export function AuthProvider({
   );
 }
 
-// Let's only export the `useAuth` hook instead of the context.
-// We only want to use the hook directly and never the context component.
+/**
+ * Fonction pour utiliser le contexte dans un composant.
+ * Doit être appelée à l'intérieur du fournisseur
+ * @returns Le contexte
+ */
 export default function useAuth() {
   return useContext<AuthContextType>(AuthContext);
 }

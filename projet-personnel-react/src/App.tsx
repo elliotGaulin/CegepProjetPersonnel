@@ -10,6 +10,7 @@ import { AuthProvider } from './Context/useAuth';
 import UnAuthGuard from './Guards/UnAuthGuard';
 import SignUp from './Pages/SignUp';
 import Layout from './Components/Layout';
+import Cat from './Pages/Cat';
 
 function App() {
 
@@ -20,13 +21,13 @@ function App() {
   },
     frFR);
 
+    //Définition des routes de l'application
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Layout/>,
+      element: <Layout />,
       children: [
         {
-          path: "/home",
+          path: "/",
           element: <AuthGuard element={<Home />} />,
         },
         {
@@ -36,6 +37,10 @@ function App() {
         {
           path: "/signup",
           element: <UnAuthGuard element={<SignUp />} />,
+        },
+        {
+          path: "/cat",
+          element: <Cat/>
         }
       ]
     }]);
@@ -43,7 +48,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }

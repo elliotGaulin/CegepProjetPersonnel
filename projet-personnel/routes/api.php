@@ -20,16 +20,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Authentification
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
 });
 
-Route::prefix('files')->controller(FileController::class)->middleware('auth:sanctum')->group(function () {
-    Route::post('/', 'store');
-    Route::get('/', 'index');
-    Route::get('/{file}', 'show');
-    Route::get('/{file}/download', 'download');
-    Route::delete('/{file}', 'destroy');
+//Opérations sur les fichiers
+Route::prefix('files')->controller(FileController::class)->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::get('/{file}', 'show');
+        Route::delete('/{file}', 'destroy');
+        Route::get('/{file}/download', 'download');
+    });
+    Route::get('public/{file}/download', 'publicDownload');
 });
