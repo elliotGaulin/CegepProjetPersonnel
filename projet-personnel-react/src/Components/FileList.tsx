@@ -56,17 +56,15 @@ export default function FileList({ files, setFiles }: { files: FileModel[], setF
      * Soummet le fichier à téléverser
      * @param file Fichier à téléverser
      */
-    function fileUploadSumbit(file: File | null) {
+    async function fileUploadSumbit(file: File | null) {
         if (!file) {
             setFileUploadOpen(false);
-            return;
+            return null;
         }
 
-        FileService.upload(file).then((file) => {
-            console.log(file);
-            setFiles([...files, file])
-            setFileUploadOpen(false);
-        })
+        let uploadedFile = await FileService.upload(file)
+        setFiles([...files, uploadedFile])
+        return uploadedFile;
     }
 
     const columns: GridColDef[] = [
@@ -113,7 +111,7 @@ export default function FileList({ files, setFiles }: { files: FileModel[], setF
     return (
         <>
             <FileUploadDialog open={fileUploadOpen} setOpen={setFileUploadOpen} submit={fileUploadSumbit} />
-            <DataGrid rows={files} columns={columns} rowSelection={false} sx={{ minHeight: "75vh" }} slots={{ toolbar: customGridToolbar }} />
+            <DataGrid rows={files} columns={columns} rowSelection={false} disableColumnFilter={true} sx={{ minHeight: "75vh" }} slots={{ toolbar: customGridToolbar }} />
         </>
     )
 }

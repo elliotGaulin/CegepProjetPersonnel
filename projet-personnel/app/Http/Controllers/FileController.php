@@ -121,6 +121,10 @@ class FileController extends Controller
             ], 404);
         }
 
+        $path = storage_path('app/' . $file->path);
+        if(file_exists($path)) {
+            unlink($path);
+        }
         $file->delete();
 
         return response()->json([
