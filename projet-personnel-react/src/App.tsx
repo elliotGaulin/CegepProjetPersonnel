@@ -11,17 +11,18 @@ import UnAuthGuard from './Guards/UnAuthGuard';
 import SignUp from './Pages/SignUp';
 import Layout from './Components/Layout';
 import Cat from './Pages/Cat';
+import File from './Pages/File';
 
 function App() {
 
   const theme = createTheme({
     palette: {
-      mode: "light",
+      mode: "dark",
     },
   },
     frFR);
 
-    //Définition des routes de l'application
+  //Définition des routes de l'application
   const router = createBrowserRouter([
     {
       element: <Layout />,
@@ -40,7 +41,15 @@ function App() {
         },
         {
           path: "/cat",
-          element: <Cat/>
+          element: <Cat />
+        },
+        {
+          path: "/files/:id",
+          element: <AuthGuard element={<File />} />,
+        },
+        {
+          path: "*",
+          element: <h1>404</h1>,
         }
       ]
     }]);

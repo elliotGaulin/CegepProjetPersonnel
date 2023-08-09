@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\FileController;
 
 /*
@@ -35,6 +36,15 @@ Route::prefix('files')->controller(FileController::class)->group(function () {
         Route::get('/{file}', 'show');
         Route::delete('/{file}', 'destroy');
         Route::get('/{file}/download', 'download');
+        Route::patch('/{file}/public', 'setPublic');
     });
     Route::get('public/{file}/download', 'publicDownload');
 });
+
+//Opérations sur les dossiers
+Route::prefix('dir')->controller(DirectoryController::class)->middleware('auth:sanctum')->group(function () {
+    Route::post('/', 'store');
+    Route::get('/{directory}', 'show');
+    Route::get('/', 'show',);
+});
+

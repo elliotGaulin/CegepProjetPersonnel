@@ -15,7 +15,11 @@ class File extends Model
     protected $fillable = [
         'filename',
         'path',
-        'filesize'
+        'filesize',
+        'public',
+        'is_directory',
+        'parent_id',
+        'mime_type',
     ];
 
     /**
@@ -26,5 +30,25 @@ class File extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Récupère le dossier parent du fichier.
+     *
+     * @return File
+     */
+    public function parent()
+    {
+        return $this->belongsTo(File::class);
+    }
+
+    /**
+     * Récupère les fichiers enfants du fichier.
+     *
+     * @return File[]
+     */
+    public function files()
+    {
+        return $this->hasMany(File::class, 'parent_id');
     }
 }

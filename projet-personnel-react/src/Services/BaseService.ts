@@ -26,4 +26,14 @@ export default class BaseService {
             'Authorization': 'Bearer ' + user.authorization.token ?? '',
         };
     }
+
+    /**
+     * Retourne les headers pour les requêtes API avec l'authentification et le content-type
+     */
+    public static getAuthHeadersWithContentType() {
+        return {
+            ...this.getAuthHeaders(),
+            ...this.getHeaders(),
+        };
+    }
 }

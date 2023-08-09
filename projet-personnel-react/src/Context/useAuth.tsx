@@ -100,8 +100,8 @@ export function AuthProvider({
    */
   function logout() {
     setLoading(true);
+    setUser(undefined);
     AuthService.logout()
-      .then(() => setUser(undefined))
       .finally(() => setLoading(false));
   }
 

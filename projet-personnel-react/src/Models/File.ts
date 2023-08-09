@@ -9,4 +9,8 @@ export default interface File {
     updated_at: Date,
     created_at: Date,
     user_id: number,
+    public : boolean,
+    is_directory: boolean,
+    parent_id: number | null,
+    mime_type: string,
 }

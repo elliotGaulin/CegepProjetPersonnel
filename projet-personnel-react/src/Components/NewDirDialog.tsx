@@ -1,5 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { MuiFileInput } from "mui-file-input";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Input } from "@mui/material";
 import { useState } from "react";
 import { default as FileModel } from "../Models/File";
 import { LoadingButton } from "@mui/lab";
@@ -8,9 +7,9 @@ import { LoadingButton } from "@mui/lab";
  * @param param0 props de la boite de dialogue : open, setOpen, submit
  * @returns Element JSX de la boite de dialogue
  */
-export default function FileUploadDialog({ open, setOpen, submit }: { open: boolean, setOpen: (open: boolean) => void, submit: (file: File|null) => Promise<FileModel|null> }) {
+export default function NewDirDialog({ open, setOpen, submit }: { open: boolean, setOpen: (open: boolean) => void, submit: (name: string) => Promise<FileModel|null> }) {
 
-    const [file, setFile] = useState<File | null>(null);
+    const [name, setName] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
     /**
@@ -23,11 +22,11 @@ export default function FileUploadDialog({ open, setOpen, submit }: { open: bool
     /**
      * Soummet le fichier à téléverser
      */
-    function handleFileSumbit() {
+    function handleSumbit() {
         setLoading(true);
-        submit(file).then(() => {
+        submit(name).then(() => {
             handleClose();
-            setFile(null);
+            setName("");
             setLoading(false);
         });
     }
@@ -37,13 +36,13 @@ export default function FileUploadDialog({ open, setOpen, submit }: { open: bool
             open={open}
             onClose={handleClose}
         >
-            <DialogTitle>Téléverser un fichier</DialogTitle>
+            <DialogTitle>Créer un dossier</DialogTitle>
             <DialogContent>
-                <MuiFileInput value={file} onChange={setFile} />
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="error">Annuler</Button>
-                <LoadingButton loading={loading} onClick={handleFileSumbit} disabled={file == null}>Soumettre</LoadingButton>
+                <LoadingButton loading={loading} onClick={handleSumbit} disabled={name === ""}>Soummettre</LoadingButton>
             </DialogActions>
         </Dialog>
     )
