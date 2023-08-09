@@ -5,6 +5,7 @@ import Loading from './Loading';
 import { getFileExtension, getLanguageFromFilename, isReadableFile } from '../Utils/FileUtils';
 import TextContents from './FileContents/TextContents';
 import PDFContents from './FileContents/PDFContents';
+import MarkdownContents from './FileContents/MarkdownContents';
 
 /**
  * Affiche le contenu d'un fichier
@@ -51,6 +52,8 @@ export default function FileContents({ file }: { file: FileModel }) {
     switch (fileExtension) {
         case 'pdf':
             return <PDFContents contents={contents} file={file} />;
+        case 'md':
+            return <MarkdownContents contents={contents} file={file} />;
         default:
             return (<TextContents contents={contents} file={file} />)
 

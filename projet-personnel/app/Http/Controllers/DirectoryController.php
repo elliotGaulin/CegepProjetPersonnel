@@ -46,7 +46,7 @@ class DirectoryController extends Controller
     public function show(Request $request, $id = null)
     {
         if (is_null($id)) {
-            $files = $request->user()->files()->whereNull('parent_id')->get();
+            $files = $request->user()->files()->whereNull('parent_id')->orderBy('is_directory', 'desc')->orderBy('filename')->get();
         } else {
             $dir = $request->user()->files()->find($id);
             if (is_null($dir)) {
@@ -59,7 +59,7 @@ class DirectoryController extends Controller
                 ], 400);
             }
 
-            $files = $dir->files()->get();
+            $files = $dir->files()->orderBy('is_directory', 'desc')->orderBy('filename')->get();
         }
 
         return response()->json([

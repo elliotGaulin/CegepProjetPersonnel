@@ -42,7 +42,8 @@ class AuthService extends BaseService {
         })
 
         let data = await response.json();
-        localStorage.removeItem('user')
+        localStorage.removeItem('user');
+        localStorage.removeItem('currentDir');
         return data;
     }
 

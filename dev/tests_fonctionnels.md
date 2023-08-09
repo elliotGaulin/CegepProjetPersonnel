@@ -36,3 +36,30 @@
 ## Easter egg de chat
 28. La page montre une image de chat
 1. L'image de chat est aléatoire
+
+## Visibilité des fichiers
+30. Les fichiers privés ne sont pas téléchargeables par un lien.
+1. Les fichiers public sont téléchargeables par un lien.
+1. Le changement de visibilité d'un fichier fonctionne
+1. Un nouveau fichier est privé par défaut
+
+## Dossiers
+34. Les dossiers sont correctement affichés dans le navigateur de fichiers
+1. Les dossiers sont affichés en premier dans le navigateur de fichiers
+1. Les boutons d'actions affichés sont seulement ceux qui sont pertinents pour un dossier
+1. L'ajout d'un dossier fonctionne
+1. Le bouton de suppression de dossier fonctionne et supprime le dossier et son contenu
+1. Le bouton d'ouverture de dossier fonctionne et ouvre le dossier
+1. Le contenu du dossier courant est bien affiché.
+1. Le nom du dossier courant est affiché dans le haut du navigateur de fichiers
+1. Le bouton de retour fonctionne et retourne au dossier parent
+1. Le bouton de retour est désactivé si on est à la racine du dossier
+
+## Lecture de fichiers
+44. Les fichiers textes sont affichés dans le navigateur de fichiers
+1. Les fichiers de code sont affichés avec de la coloration syntaxique appropriée
+1. Les fichiers markown sont affichés en tant que HTML
+1. Les fichiers PDF :
+    1. Sont rendu en tant que PDF
+    1. Le zoom fonctionne
+    1. Le changement de page fonctionne

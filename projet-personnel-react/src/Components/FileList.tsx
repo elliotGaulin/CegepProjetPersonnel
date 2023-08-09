@@ -135,11 +135,6 @@ export default function FileList({ files, setFiles, currentDirectory, handleDirC
             },
         },
         {
-            field: 'updated_at', headerName: 'Mise à jour le', flex: 1, renderCell(params) {
-                return (new Date(params.value as string).toLocaleString());
-            },
-        },
-        {
             field: 'actions', headerName: 'Actions', flex: 1, sortable: false, align: "right", renderCell: (params) => {
                 const file = params.row as FileModel;
                 return (
@@ -194,7 +189,7 @@ export default function FileList({ files, setFiles, currentDirectory, handleDirC
             <GridToolbarContainer sx={{ width: "100%" }} >
                 {/* Folder name with the same stye as the buttons */}
                 <Folder color="primary"/><FolderDisplay>: {currentDirectory?.filename ?? "Racine"}</FolderDisplay>
-                {currentDirectory != null && <Button startIcon={<KeyboardReturn />} onClick={handlePreviousDir}>Dossier précédent</Button>}
+                <Button startIcon={<KeyboardReturn />} onClick={handlePreviousDir} disabled={currentDirectory == null}>Dossier précédent</Button>
                 <Button startIcon={<CreateNewFolder />} onClick={() => setNewDirOpen(true)}>Dossier</Button>
                 <Button onClick={() => setFileUploadOpen(true)} startIcon={<UploadFile />}>Téléverser</Button>
             </GridToolbarContainer>
